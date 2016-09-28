@@ -155,7 +155,7 @@ namespace UCS.Core
                         Alliance alliance = new Alliance();
                         alliance.LoadFromJSON(c.Data);
                         alliances.Add(alliance);
-                        if (count++ >= 500)
+                        if (count++ >= 100)
                             break;
                     }
                     //Debugger.WriteLine("[UCS]    The server loaded " + count + " alliances");
@@ -181,7 +181,7 @@ namespace UCS.Core
                     {
                         Level pl = new Level();
                         players.TryAdd(pl.GetPlayerAvatar().GetId(), pl);
-                        if (count++ >= 500)
+                        if (count++ >= 100)
                             break;
                     }
                     //Debugger.WriteLine("[UCS]    The server loaded " + count + " players");
@@ -376,7 +376,7 @@ namespace UCS.Core
                                     );
                         }
                     transactionCount++;
-                    if (transactionCount >= 500)
+                    if (transactionCount >= 100)
                     {
                         context.SaveChanges();
                         transactionCount = 0;
@@ -427,7 +427,7 @@ namespace UCS.Core
                             }
                         }
                     transactionCount++;
-                    if (transactionCount >= 500)
+                    if (transactionCount >= 100)
                     {
                         context.SaveChanges();
                         context.SaveChanges();
