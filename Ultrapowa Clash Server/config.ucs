@@ -1,0 +1,28 @@
+<appSettings>
+  <add key="startingGems" value="999999999" />
+  <!-- Beware, very high value will crash UCS -->
+  <add key="startingGold" value="999999999" />
+  <!-- Beware, very high value will crash UCS -->
+  <add key="startingElixir" value="999999999" />
+  <!-- Beware, very high value will crash UCS -->
+  <add key="startingDarkElixir" value="10000000" />
+  <!-- Beware, very high value will crash UCS -->
+  <add key="startingTrophies" value="random" />
+  <!-- User starting trophies - set to random for random starting trophies -->
+  <add key="startingLevel" value="1" />
+  <!-- User starting level (Beware, 9 is the highest starting level) -->
+  <add key="UpdateUrl" value="https://ultrapowa.com/" />
+  <!-- Specify where to redirect if the CoC version is outdated -->
+  <add key="useCustomPatch" value="false" />
+  <!-- Specify if the server is using patches (.csv, .sc, ...) -->
+  <add key="patchingServer" value="" />
+  <!-- Don't forget the trailing slash -->
+  <add key="maintenanceTimeleft" value="0" />
+  <!-- Please set the time in seconds like 1200 seconds for 20 minutes -->
+  <add key="databaseConnectionName" value="sqlite" />
+  <!-- Choose mysql or sqlite-->
+  <add key="AdminMessage" value="Welcome to UCS Beta! Visit http://ultrapowa.com for more Infos."/>
+  <!-- The AdminMessage will be shown in the Inbox of the Players-->
+  <add key="ServerPort" value="9339"/>
+  <!-- The Port of the Server (default is 9339)-->
+</appSettings>
