@@ -18,6 +18,12 @@ namespace UCS.Core
 {
     internal class MessageManager
     {
+        #region Private Fields
+
+        private static BlockingCollection<Message> m_vPackets = new BlockingCollection<Message>(); // new Method
+        
+        #endregion Private Fields
+
         #region Public Constructors
 
         /// <summary>
@@ -25,7 +31,9 @@ namespace UCS.Core
         /// </summary>
         public MessageManager()
         {
-            m_vPackets = new ConcurrentQueue<Message>();
+            PacketProcessingDelegate packetProcessing = PacketProcessing;
+            packetProcessing.BeginInvoke(null, null);
+            Console.WriteLine("[UCS]    Message manager has been successfully started !");
         }
 
         #endregion Public Constructors
@@ -39,25 +47,21 @@ namespace UCS.Core
         {
             while (true)
             {
-                m_vWaitHandle.WaitOne();
-
-                Message p;
-                while (m_vPackets.TryDequeue(out p))
+                var p = m_vPackets.Take();
+                ThreadPool.QueueUserWorkItem(state =>
                 {
-                    var pl = p.Client.GetLevel();
-                    var player = "";
-                    if (pl != null)
-                        player += " (" + pl.GetPlayerAvatar().GetId() + ", " + pl.GetPlayerAvatar().GetAvatarName() +
-                                  ")";
+                    var m = (Message)state;
+                    var m2 = m.Client.GetLevel();
                     try
                     {
-                        p.Decode();
-                        p.Process(pl);
+                        m.Decode();
+                        m.Process(m2);
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
+                        //Console.WriteLine("ERROR: " + e); //just for testing but works fine
                     }
-                }
+                }, p);
             }
         }
 
@@ -65,16 +69,9 @@ namespace UCS.Core
 
         #region Private Delegates
 
-        delegate void PacketProcessingDelegate();
+        private delegate void PacketProcessingDelegate();
 
         #endregion Private Delegates
-
-        #region Private Fields
-
-        static readonly EventWaitHandle m_vWaitHandle = new AutoResetEvent(false);
-        static ConcurrentQueue<Message> m_vPackets;
-
-        #endregion Private Fields
 
         #region Public Methods
 
@@ -84,20 +81,8 @@ namespace UCS.Core
         /// <param name="p">The message/packet.</param>
         public static void ProcessPacket(Message p)
         {
-            m_vPackets.Enqueue(p);
-            m_vWaitHandle.Set();
+            m_vPackets.Add(p);
         }
-
-        /// <summary>
-        ///     This function start the MessageManager.
-        /// </summary>
-        public void Start()
-        {
-            PacketProcessingDelegate packetProcessing = PacketProcessing;
-            packetProcessing.BeginInvoke(null, null);
-            Console.WriteLine("[UCS]    Message manager has been successfully started !");
-        }
-
         #endregion Public Methods
     }
 }
