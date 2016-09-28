@@ -33,7 +33,7 @@ namespace UCS.Core.Threading
             {
                 new VersionChecker();
                 new PacketManager().Start();
-                new MessageManager().Start();
+                new MessageManager();
                 new ResourcesManager();
                 new ObjectManager();
                 new Gateway().Start();
